@@ -52,12 +52,3 @@ print(se.name_to_cik('Nvidia Corp'))
 print(se.ticker_to_cik('MSFT'))
 print(se.name_to_cik('Fake Corp'))
 print(se.ticker_to_cik('FAKE'))
-
-    
-
-
-
-
-        
-
-
