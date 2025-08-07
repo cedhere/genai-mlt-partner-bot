@@ -1,3 +1,1 @@
-## MLT Gen AI Project
-
-Full Stack LLM Service on AWS
+## Full Stack LLM Service on AWS
