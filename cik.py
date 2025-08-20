@@ -1,30 +1,27 @@
 import requests
+import boto3
+import json
 
 class SecEdgar:
-    def __init__(self, fileurl):
-        self.fileurl = fileurl
+    def __init__(self, bucket, key_name):
+        self.s3 = boto3.client('s3')
+        self.bucket = bucket
+        self.key_name = key_name
+        self.headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
+        
+        obj =  self.s3.get_object(Bucket = self.bucket, Key = self.key_name)
+        data = obj['Body'].read()
+        self.filejson = json.loads(data)
+
         self.name_dict = {}
         self.ticker_dict = {}
-        self.data_dict = {}
 
-
-        headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
-        r = requests.get(self.fileurl, headers=headers)
-        data = r.json()
-
-        # parsing the data from the json into the respective dictionaries
-        for entry in data.values():
-            cik = int(entry["cik_str"])
-            ticker = entry["ticker"]
-            name = entry["title"]
-
-            if not name or not ticker:
-                continue
-
-            self.data_dict[cik] = (cik, name, ticker)
-            self.name_dict[name.lower()] = cik
-            self.ticker_dict[ticker.lower()] = cik
-        
+        for value in self.filejson.values():
+            cik = value["cik_str"]
+            name = value["title"]
+            ticker = value["ticker"]
+            self.name_dict[name] = (cik, name, ticker)
+            self.ticker_dict[ticker] = (cik, name, ticker)
     """
     Function that will look up a company's full CIK information using the company name
     """
@@ -133,7 +130,7 @@ class SecEdgar:
 
 
 ### Testing classes and methods ###
-se = SecEdgar('https://www.sec.gov/files/company_tickers.json')
+se = SecEdgar("sec-edgar-data-cedric", "company_tickers.json")
 print(se.name_to_cik('Nvidia Corp'))
 print(se.ticker_to_cik('MSFT'))
 print(se.name_to_cik('Fake Corp'))
