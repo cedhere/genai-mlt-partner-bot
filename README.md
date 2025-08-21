@@ -1,5 +1,9 @@
 ## MLT Gen AI Project
 
+## Introduction
+As part of the MLT Career Prep '27 cohort, I had the opportunity to expand my technical skills by building this project. Beyond learning the technologies listed in the tech stack below, I also developed experience with the full software development lifecycle — including project planning, meeting deadlines, code deployment, and overall project management.
+
+
 ## What is the SEC & Its Use in This Project
 
 The U.S. Securities and Exchange Commission (SEC) is the federal government agency that regulates the securities markets in the United States. Its mission is to protect investors, maintain fair and efficient markets, and facilitate capital formation — essentially acting as the referee of the stock market.
