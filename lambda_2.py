@@ -6,7 +6,7 @@ key = "company_tickers.json"
 def lambda_handler(event, context):
     try:
         sec = cik.SecEdgar(bucket, key)
-        
+
         # gets the json input and parses
         request_type = event.get("request_type")
         company_ticker = event.get("company")
@@ -54,25 +54,3 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': "server error"
         }
-
-if __name__ == "__main__":
-    # Example test payload (Annual)
-    test_event_annual = {
-        "request_type": "Annual",
-        "company": "AAPL",
-        "year": 2023
-    }
-
-    # Example test payload (Quarterly)
-    test_event_quarter = {
-        "request_type": "Quarter",
-        "company": "AAPL",
-        "year": 2022,
-        "quarter": 2
-    }
-
-    print("Annual Filing Test:")
-    print(lambda_handler(test_event_annual, None))
-
-    print("\nQuarterly Filing Test:")
-    print(lambda_handler(test_event_quarter, None))
