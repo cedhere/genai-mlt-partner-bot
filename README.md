@@ -3,6 +3,10 @@
 ## Introduction
 As part of the MLT Career Prep '27 cohort, I had the opportunity to expand my technical skills by building this project. Beyond learning the technologies listed in the tech stack below, I also developed experience with the full software development lifecycle — including project planning, meeting deadlines, code deployment, and overall project management. The project layout was created entirely by MLT, all credit to them.
 
+## Tech Stack
+- Python
+- cURL
+- AWS (Lambda, S3, EventBridge)
 
 ## What is the SEC & Its Use in This Project
 
