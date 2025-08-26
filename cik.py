@@ -7,7 +7,7 @@ class SecEdgar:
         self.s3 = boto3.client('s3')
         self.bucket = bucket
         self.key_name = key_name
-        self.headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
+        self.headers = {'user-agent': 'MLT CPL cpierrelouis1114@gmail.com'}
         
         obj =  self.s3.get_object(Bucket = self.bucket, Key = self.key_name)
         data = obj["Body"].read().decode("utf-8")
@@ -82,7 +82,7 @@ class SecEdgar:
     def _get_filings_data(self, cik):
         cik_str = str(cik).zfill(10)
         url = f"https://data.sec.gov/submissions/CIK{cik_str}.json"
-        headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
+        headers = {'user-agent': 'MLT CPL cpierrelouis1114@gmail.com'}
         r = requests.get(url, headers=headers)
         data = r.json()
         return data["filings"]["recent"]

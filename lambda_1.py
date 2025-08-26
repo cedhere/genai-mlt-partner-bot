@@ -11,7 +11,7 @@ def lambda_handler(event, context):
         url = "https://www.sec.gov/files/company_tickers.json"
         
         print("Starting the SEC downloading")
-        headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
+        headers = {'user-agent': 'MLT CPL cpierrelouis1114@gmail.com'}
         response = requests.get(url)
         print("Download completed, the file size is", len(response.content))
 
