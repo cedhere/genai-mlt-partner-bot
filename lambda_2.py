@@ -6,7 +6,7 @@ key = "company_tickers.json"
 def lambda_handler(event, context):
     try:
         sec = cik.SecEdgar(bucket, key)
-
+        
         # gets the json input and parses
         request_type = event.get("request_type")
         company_ticker = event.get("company")
