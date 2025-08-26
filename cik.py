@@ -10,25 +10,25 @@ class SecEdgar:
         self.headers = {'user-agent': 'MLT CB cpierrelouis1114@gmail.com'}
         
         obj =  self.s3.get_object(Bucket = self.bucket, Key = self.key_name)
-        data = obj['Body'].read()
+        data = obj["Body"].read().decode("utf-8")
         self.filejson = json.loads(data)
 
         self.name_dict = {}
         self.ticker_dict = {}
 
         for value in self.filejson.values():
-            cik = value["cik_str"]
-            name = value["title"]
-            ticker = value["ticker"]
-            self.name_dict[name] = (cik, name, ticker)
-            self.ticker_dict[ticker] = (cik, name, ticker)
+            cik = str(value["cik_str"]).zfill(10)
+            name = value["title"].lower()
+            ticker = value["ticker"].lower()
+
+            self.name_dict[name] = (cik, value["title"], value["ticker"])
+            self.ticker_dict[ticker] = (cik, value["title"], value["ticker"])
     """
     Function that will look up a company's full CIK information using the company name
     """
     def name_to_cik(self, name):
         try:
-            cik = self.name_dict[name.lower()]
-            return self.data_dict[cik]
+            return self.name_dict[name.lower()]
         except KeyError:
             return "Not found"
 
@@ -38,8 +38,7 @@ class SecEdgar:
     """
     def ticker_to_cik(self, ticker):
         try:
-            cik = self.ticker_dict[ticker.lower()]
-            return self.data_dict[cik]
+            return self.ticker_dict[ticker.lower()]
         except KeyError:
             return "Not found"
     
