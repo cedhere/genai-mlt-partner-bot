@@ -23,6 +23,7 @@ class SecEdgar:
 
             self.name_dict[name] = (cik, value["title"], value["ticker"])
             self.ticker_dict[ticker] = (cik, value["title"], value["ticker"])
+    
     """
     Function that will look up a company's full CIK information using the company name
     """
@@ -144,7 +145,7 @@ cik2 = cik_info2[0]
 print(se.annual_filing(cik1, 2024))
 print(se.quarterly_filing(cik1, 2024, 1))
 
-# testinf fail cases
+# testing fail cases
 print(se.annual_filing(cik1, 2026))
 print(se.quarterly_filing(cik1, 2025, 7))
 

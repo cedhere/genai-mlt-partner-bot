@@ -31,7 +31,7 @@ The first feature implemented was the CIK Lookup Module. This feature allows you
 3. Standardize the input so lookups are reliable  
 4. Provide helper functions for easy access  
 
-### Improvement with AWS (currently tweaking)
+### Improvement with AWS
 
 After learning about cloud development with AWS, I began improving the lookup module.  
 
