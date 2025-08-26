@@ -46,14 +46,14 @@ class SecEdgar:
     
     # SEC EDGAR API Library
     def annual_filing(self, cik, year):
-        if not isinstance(cik, int):
+        cik_str = self._normalize_cik(cik)
+        if not cik_str:
             return "Not found"
-        
-        filing_info = self._match_filing(cik, "10-K", year)
+
+        filing_info = self._match_filing(cik_str, "10-K", int(year))
         if not filing_info:
             return "Not found"
         
-        cik_str = str(cik).zfill(10)
         return {
             "url": f"https://www.sec.gov/Archives/edgar/data/{cik_str}/{filing_info[0]}/{filing_info[2]}",
             "filing date": filing_info[1],
@@ -61,14 +61,14 @@ class SecEdgar:
         }
 
     def quarterly_filing(self, cik, year, quarter):
-        if not isinstance(cik, int):
+        cik_str = self._normalize_cik(cik)
+        if not cik_str:
             return "Not found"
         
-        filing_info = self._match_filing(cik, "10-Q", year, quarter)
+        filing_info = self._match_filing(cik_str, "10-Q", int(year), int(quarter))
         if not filing_info:
             return "Not found"
 
-        cik_str = str(cik).zfill(10)
         return {
             "url": f"https://www.sec.gov/Archives/edgar/data/{cik_str}/{filing_info[0]}/{filing_info[2]}",
             "filing date": filing_info[1],
@@ -92,21 +92,28 @@ class SecEdgar:
     """
     def _match_filing(self, cik, form_type, year, quarter=None):
         data = self._get_filings_data(cik)
-        forms = data["form"]
-        accessionNumbers = data["accessionNumber"]
-        dates = data["filingDate"]
-        primaryDocuments = data["primaryDocument"]
+        forms = data.get("form", [])
+        accessionNumbers = data.get("accessionNumber", [])
+        dates = data.get("filingDate", [])
+        primaryDocuments = data.get("primaryDocument", [])
 
         for i in range(len(forms)):
-            if forms[i] != form_type:
+            if not forms[i].startswith(form_type):
                 continue
 
-            filing_year = int(dates[i][:4])
-            if filing_year != year:
+            try:
+                filing_year = int(dates[i][:4])
+            except (ValueError, IndexError):
                 continue
 
-            if forms[i] == "10-Q" and quarter is not None:
-                month = int(dates[i][5:7])
+            if filing_year != year and filing_year != year + 1:
+                continue
+
+            if form_type == "10-Q" and quarter is not None:
+                try:
+                    month = int(dates[i][5:7])
+                except (ValueError, IndexError):
+                    continue
                 if not self._match_quarter(month, quarter):
                     continue
             
@@ -127,6 +134,24 @@ class SecEdgar:
             return 7 <= month <= 9
         elif quarter == 4:
             return 10 <= month <= 12
+    
+    """
+    Helper method to extract the cik
+    """
+    def _extract_cik_value(self, cik):
+        if isinstance(cik, (tuple, list)) and cik:
+            return cik[0]
+        return cik
+
+    """
+    Helper method for normalizing the cik
+    """
+    def _normalize_cik(self, cik):
+        try:
+            return str(int(self._extract_cik_value(cik))).zfill(10)
+        except (TypeError, ValueError):
+            return None
+
 
 
 ### Testing classes and methods ###
